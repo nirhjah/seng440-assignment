@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Splash.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">
+            @color/witsocpurple
+        </item>
+        <item name="windowSplashScreenAnimatedIcon">
+            @drawable/witsoclogo_splash
+        </item>
+        <item name="windowSplashScreenAnimationDuration">
+            1000000
+        </item>
+    </style>
+</resources>
