@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,9 +34,11 @@ import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import kotlinx.coroutines.delay
 import nz.ac.uclive.nse41.witsoc.ui.theme.WitsocTheme
@@ -62,6 +66,9 @@ class MainActivity : ComponentActivity() {
 
                     ) {
 
+                        Text(stringResource(R.string.home_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier.width(400.dp).padding(top = 15.dp), fontSize = 30.sp)
+
+
                         var visible by remember {
                             mutableStateOf(false)
                         }
@@ -79,11 +86,12 @@ class MainActivity : ComponentActivity() {
                                 fullHeight / 2
                             },
                         ) {
-                            // Content that needs to appear/disappear goes here:
                             WitsocLogo()
                         }
 
                         Text(stringResource(R.string.about_witsoc), textAlign = TextAlign.Center, modifier = Modifier.padding(all = 20.dp))
+
+
                     }
                 }
             }
@@ -92,52 +100,12 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
-
-
-/*
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WitsocTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WitsocTheme {
-        Greeting("Android")
-    }
-}*/
-
 @Composable
 fun WitsocLogo() {
-
     Image(
         painter = painterResource(id = R.drawable.witsoclogo),
         contentDescription = "witsoc logo"
     )
-
-
-
 }
+
+

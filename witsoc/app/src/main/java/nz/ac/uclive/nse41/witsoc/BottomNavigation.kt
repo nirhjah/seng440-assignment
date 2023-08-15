@@ -4,22 +4,21 @@ import android.content.Intent
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults.containerColor
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun BottomNavigation() {
 
     val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.List,
-        BottomNavItem.Analytics
+        BottomNavItem.About,
+        BottomNavItem.Events,
+        BottomNavItem.Contact
     )
 
     NavigationBar {
@@ -38,9 +37,20 @@ fun RowScope.AddItem(
 
     val mContext = LocalContext.current
     NavigationBarItem(
-        // Text that shows bellow the icon
         label = {
-            Text(text = screen.title)
+
+            if (screen.title == "About") {
+                Text(text = stringResource(id = R.string.about_heading))
+            }
+            if (screen.title == "Events") {
+                Text(text = stringResource(id = R.string.events_heading))
+            }
+            if (screen.title == "Contact Us") {
+                Text(text = stringResource(id = R.string.contact_heading))
+            }
+
+
+
         },
 
         // The icon resource
@@ -51,13 +61,10 @@ fun RowScope.AddItem(
             )
         },
 
-        // Display if the icon it is select or not
         selected = true,
 
-        // Always show the label bellow the icon or not
         alwaysShowLabel = true,
 
-        // Click listener for the icon
         onClick = { if (screen.title == "About") {
             mContext.startActivity(Intent(mContext, MainActivity::class.java))}
 
@@ -73,7 +80,6 @@ fun RowScope.AddItem(
 
         },
 
-        // Control all the colors of the icon
         colors = NavigationBarItemDefaults.colors()
     )
 }

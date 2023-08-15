@@ -1,24 +1,25 @@
 package nz.ac.uclive.nse41.witsoc
 
-import androidx.compose.ui.res.stringResource
 
 sealed class BottomNavItem(
+
     var title: String,
     var icon: Int
 ) {
-    object Home :
+    object About :
         BottomNavItem(
+
             "About",
             R.drawable.home
         )
 
-    object List :
+    object Events :
         BottomNavItem(
             "Events",
             R.drawable.events
         )
 
-    object Analytics :
+    object Contact :
         BottomNavItem(
             "Contact Us",
             R.drawable.contact

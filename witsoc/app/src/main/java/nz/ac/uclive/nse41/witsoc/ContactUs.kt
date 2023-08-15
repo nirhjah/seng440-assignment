@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,27 +53,20 @@ class ContactUs : ComponentActivity()  {
                     containerColor =  Color(0xFFCCBFF7)
                 ) {
 
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
-                        Text("Contact Us", textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier
-                            .width(400.dp)
-                            .padding(top = 15.dp), fontSize = 30.sp)
-
-                     /*   Row(verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 10.dp)) {*/
+                    Column(modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = 90.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                        Text(
+                            stringResource(id = R.string.contact_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier
+                                .width(400.dp)
+                                .padding(top = 15.dp), fontSize = 30.sp)
                             EmailButton()
                             FacebookButton()
                             InstagramButton()
                             LinkedinButton()
                             DiscordButton()
                             SignUpButton()
-
-
                     }
-
-
-
-
 
                 }
 
