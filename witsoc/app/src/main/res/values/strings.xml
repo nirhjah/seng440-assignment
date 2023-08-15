@@ -4,5 +4,11 @@
     <string name="events_heading">Events</string>
     <string name="about_heading">About</string>
     <string name="contact_heading">Contact Us</string>
+    <string name="email">Email</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="signup">Sign Up</string>
+    <string name="discord">Discord</string>
 
 </resources>
