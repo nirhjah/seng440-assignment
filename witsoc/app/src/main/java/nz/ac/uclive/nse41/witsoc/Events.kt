@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,8 +20,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,19 +33,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.startActivity
 import nz.ac.uclive.nse41.witsoc.ui.theme.WitsocTheme
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 
 class Events : ComponentActivity() {
@@ -55,15 +53,15 @@ class Events : ComponentActivity() {
 
 
     private val events = listOf<Event>(
-        Event("Wellbeing Workshop", "15/08 | 6pm", "social", "https://fb.me/e/W5aRT1tB"),
-        Event("First Year Panel w WiE & UC ENG", "21/08 | 6pm", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
-        Event("Bingo Night","25/08 | 7-9pm", "social", ""),
-        Event("Trimble Lunch & Learn","6/09 | 12:30-2:30pm", "workplace", ""),
-        Event("Movie Night","Date TBD", "social", ""),
-        Event("Welcome Back Cozy Vibes","Date TBD", "social", ""),
-        Event("Exec Recruitment Event","Date TBD", "social", ""),
-        Event("Catalyst Office Tour","Date TBD", "workplace", ""),
-        Event("Coffee Time","Date TBD", "coffee time", "")
+        Event("Wellbeing Workshop", "2023-08-15T18:00:00", "2023-08-15T20:00:00", "social", "https://fb.me/e/W5aRT1tB"),
+        Event("First Year Panel w WiE & UC ENG", "2023-08-21T18:00:00", "2023-08-21T20:00:00", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
+        Event("Bingo Night","2023-08-25T19:00:00", "2023-08-25T21:00:00", "social", ""),
+        Event("Trimble Lunch & Learn", "2023-09-6T12:30:00", "2023-09-6T14:30:00", "workplace", ""),
+        Event("Movie Night","", "", "social", ""),
+        Event("Welcome Back Cozy Vibes","", "", "social", ""),
+        Event("Exec Recruitment Event","", "", "social", ""),
+        Event("Catalyst Office Tour","", "", "workplace", ""),
+        Event("Coffee Time","", "", "coffee time", "")
     )
 
 
@@ -81,7 +79,9 @@ class Events : ComponentActivity() {
                     },
                     containerColor =  Color(0xFFCCBFF7)
                 ) {}
-                Text(stringResource(R.string.events_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier.width(400.dp).padding(top = 15.dp), fontSize = 30.sp)
+                Text(stringResource(R.string.events_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier
+                    .width(400.dp)
+                    .padding(top = 15.dp), fontSize = 30.sp)
 
                 EventsList(events)
 
@@ -97,6 +97,7 @@ fun EventsList(events: List<Event>) {
     val mContext = LocalContext.current
 
     val listState = rememberLazyListState()
+
 
 
     LazyColumn(
@@ -123,16 +124,26 @@ fun EventsList(events: List<Event>) {
                     .clickable {
 
                         if (event.eventURL.isBlank()) {
-                            Toast.makeText(mContext, "Event doesn't have a link yet, check back later!", Toast.LENGTH_LONG).show()
+                            Toast
+                                .makeText(
+                                    mContext,
+                                    "Event doesn't have a link yet, check back later!",
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
                         } else {
                             mContext.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse(event.eventURL)))
+                                    Uri.parse(event.eventURL)
+                                )
+                            )
                         }
                     }
 
             ) {
+
+
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 10.dp)) {
                     eventTypeIcon(event.eventType)
                     Column() {
@@ -142,12 +153,22 @@ fun EventsList(events: List<Event>) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = event.date,
+                            text = event.startTime,
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                                .padding(bottom = 15.dp)
+                        )
+                        Text(
+
+
+                            text = event.endTime,
+
                             modifier = Modifier
                                 .padding(horizontal = 10.dp)
                                 .padding(bottom = 15.dp)
                         )
                     }
+                    EventNotificationButton(event)
                     EmailEventButton("Event Enquiry: " + event.name)
                 }
             }
@@ -179,16 +200,32 @@ fun eventTypeIcon(eventType : String) {
 fun EventNotificationButton(event : Event) {
     val context = LocalContext.current
 
-    IconButton(
-        onClick = {
 
+    if (event.startTime.isNotBlank() && event.endTime.isNotBlank()) {
+
+        IconButton(
+            onClick = {
+                val mSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                val mStartTime = mSimpleDateFormat.parse(event.startTime)
+                val mEndTime = mSimpleDateFormat.parse(event.endTime)
+                val intent = Intent(Intent.ACTION_EDIT)
+                intent.type = "vnd.android.cursor.item/event"
+                intent.putExtra("beginTime", mStartTime.time)
+                intent.putExtra("allDay", false)
+                intent.putExtra("endTime", mEndTime.time)
+                intent.putExtra("title", event.name)
+                context.startActivity(intent)
+
+
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.DateRange,
+                contentDescription = "Notification",
+                modifier = Modifier.size(30.dp)
+            )
         }
-    ) {
-        Icon(imageVector = Icons.Outlined.Notifications, contentDescription = "Notification", modifier = Modifier.size(30.dp))
-
-
     }
-
 }
 
 
