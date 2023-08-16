@@ -14,7 +14,9 @@ import androidx.compose.animation.shrinkVertically
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -63,41 +65,79 @@ class MainActivity : ComponentActivity() {
                     containerColor =  Color(0xFFCCBFF7)
                 ) {
 
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.verticalScroll(rememberScrollState()).padding(bottom = 90.dp)
 
-                    ) {
+                    BoxWithConstraints {
+                        if (maxWidth < 400.dp) {
 
-                        Text(stringResource(R.string.home_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier.width(400.dp).padding(top = 15.dp), fontSize = 30.sp)
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.verticalScroll(rememberScrollState()).padding(bottom = 90.dp)
+
+                            ) {
+
+                                Text(stringResource(R.string.home_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier.width(400.dp).padding(top = 15.dp), fontSize = 30.sp)
+                                //ANIMATION
+                                var visible by remember {
+                                    mutableStateOf(false)
+                                }
+                                LaunchedEffect(key1 = Unit, block = {
+                                    delay(100L)
+                                    visible = true
+                                })
+                                AnimatedVisibility(
+                                    visible,
+                                    enter = expandVertically(expandFrom = Alignment.Top) { 20 },
+                                    exit = shrinkVertically(animationSpec = tween()) { fullHeight ->
+                                        fullHeight / 2
+                                    },
+                                ) {
+                                    WitsocLogo()
+                                }
+
+                                Text(stringResource(R.string.about_witsoc), textAlign = TextAlign.Center, modifier = Modifier.padding(all = 20.dp), fontSize = 20.sp)
+
+                                ImageDisplay()
+
+                            }
+
+                        } else {
+
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.verticalScroll(rememberScrollState()).padding(bottom = 90.dp)
+
+                            ) {
+
+                                Text(stringResource(R.string.home_heading), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier.width(400.dp).padding(top = 15.dp), fontSize = 30.sp)
+                                WitsocLogo()
+                                Text(stringResource(R.string.about_witsoc), textAlign = TextAlign.Center, modifier = Modifier.padding(all = 20.dp), fontSize = 20.sp)
 
 
-                        var visible by remember {
-                            mutableStateOf(false)
+                                Row {
+
+                                    ImageDisplay()
+                                }
+
+                            }
+
+
+
+
                         }
-                        LaunchedEffect(key1 = Unit, block = {
-                            delay(100L)
-                            visible = true
-                        })
-                        AnimatedVisibility(
-                            visible,
-                            // Sets the initial height of the content to 20, revealing only the top of the content at
-                            // the beginning of the expanding animation.
-                            enter = expandVertically(expandFrom = Alignment.Top) { 20 },
-                            // Shrinks the content to half of its full height via an animation.
-                            exit = shrinkVertically(animationSpec = tween()) { fullHeight ->
-                                fullHeight / 2
-                            },
-                        ) {
-                            WitsocLogo()
-                        }
-
-                        Text(stringResource(R.string.about_witsoc), textAlign = TextAlign.Center, modifier = Modifier.padding(all = 20.dp))
-
-                        ImageDisplay()
-
                     }
+
+
+
+
+
+
+
+
+
+
+
                 }
             }
         }

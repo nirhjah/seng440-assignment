@@ -8,13 +8,17 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -39,12 +43,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import nz.ac.uclive.nse41.witsoc.ui.theme.WitsocTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class Events : ComponentActivity() {
@@ -54,7 +61,7 @@ class Events : ComponentActivity() {
 
     private val events = listOf<Event>(
         Event("Wellbeing Workshop", "2023-08-15T18:00:00", "2023-08-15T20:00:00", "social", "https://fb.me/e/W5aRT1tB"),
-        Event("UC ENG First Year Panel", "2023-08-21T18:00:00", "2023-08-21T20:00:00", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
+        Event("UC ENG First Year Panel with WiE", "2023-08-21T18:00:00", "2023-08-21T20:00:00", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
         Event("Bingo Night","2023-08-25T19:00:00", "2023-08-25T21:00:00", "social", ""),
         Event("Trimble Lunch & Learn", "2023-09-6T12:30:00", "2023-09-6T14:30:00", "workplace", ""),
         Event("Movie Night","", "", "social", ""),
@@ -100,6 +107,8 @@ fun EventsList(events: List<Event>) {
 
 
 
+
+
     LazyColumn(
         state = listState,
 
@@ -110,6 +119,13 @@ fun EventsList(events: List<Event>) {
 
         ) {
         items(events) { event ->
+
+            val formattedStart = formatAndReturnDate(event.startTime)
+            val formattedEnd = formatAndReturnTime(event.endTime)
+
+
+
+
             Card(
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(
@@ -143,38 +159,97 @@ fun EventsList(events: List<Event>) {
 
             ) {
 
-
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 10.dp)) {
-                    eventTypeIcon(event.eventType)
-                    Column( ) {
-                        Text(
-                            text = event.name,
-                            modifier = Modifier.padding(all = 10.dp),
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = event.startTime,
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                                .padding(bottom = 15.dp)
-                        )
-                        Text(
+                Box {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // Icon on the left side
+                            eventTypeIcon(event.eventType)
 
 
-                            text = event.endTime,
+                            // Box to hold text with clipping
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .wrapContentWidth(Alignment.Start)
+                            ) {
 
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                                .padding(bottom = 15.dp)
-                        )
-                    }
-                    //fix padding of buttons here
-                    Column(horizontalAlignment = Alignment.End, modifier = Modifier.padding(top = 20.dp)) {
-                        EventNotificationButton(event)
-                        EmailEventButton("Event Enquiry: " + event.name)
+                                Text(
+                                    text = event.name,
+                                    modifier = Modifier.padding(all = 10.dp),
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        // Two Texts side by side
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "$formattedStart -"
+                            )
+                            Text(
+                                text = formattedEnd
+                            )
+
+
+                        }
+
+                        // Icons on the right side
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+
+                            EventNotificationButton(event)
+
+                            EmailEventButton("Event Enquiry: " + event.name)
+
+                        }
                     }
                 }
+
+
             }
+
+
+            /*      Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 10.dp)) {
+               eventTypeIcon(event.eventType)
+               Column( ) {
+                   Text(
+                       text = event.name,
+                       modifier = Modifier.padding(all = 10.dp),
+                       fontWeight = FontWeight.Bold
+                   )
+                   Text(
+                       text = event.startTime,
+                       modifier = Modifier
+                           .padding(horizontal = 10.dp)
+                           .padding(bottom = 15.dp)
+                   )
+                   Text(
+                       text = event.endTime,
+                       modifier = Modifier
+                           .padding(horizontal = 10.dp)
+                           .padding(bottom = 15.dp)
+                   )
+               }
+               //fix padding of buttons here
+               Column(horizontalAlignment = Alignment.End, modifier = Modifier.padding(top = 20.dp)) {
+                   EventNotificationButton(event)
+                   EmailEventButton("Event Enquiry: " + event.name)
+               }
+           }*/
         }
     }
 }
@@ -182,19 +257,19 @@ fun EventsList(events: List<Event>) {
 @Composable
 fun eventTypeIcon(eventType : String) {
     if (eventType == "workshop") {
-        Icon(painter = painterResource(id = R.drawable.events), contentDescription = "workshop", modifier = Modifier.size(40.dp))
+        Icon(painter = painterResource(id = R.drawable.events), contentDescription = "workshop", modifier = Modifier.size(40.dp).padding(end = 8.dp))
     }
     if (eventType == "coffee time") {
-        Icon(painter = painterResource(id = R.drawable.coffee), contentDescription = "coffee time", modifier = Modifier.size(40.dp))
+        Icon(painter = painterResource(id = R.drawable.coffee), contentDescription = "coffee time", modifier = Modifier.size(40.dp).padding(end = 8.dp))
     }
     if (eventType == "social") {
-        Icon(painter = painterResource(id = R.drawable.social), contentDescription = "social", modifier = Modifier.size(40.dp))
+        Icon(painter = painterResource(id = R.drawable.social), contentDescription = "social", modifier = Modifier.size(40.dp).padding(end = 8.dp))
     }
     if (eventType == "workplace") {
-        Icon(painter = painterResource(id = R.drawable.workplace), contentDescription = "workplace", modifier = Modifier.size(40.dp))
+        Icon(painter = painterResource(id = R.drawable.workplace), contentDescription = "workplace", modifier = Modifier.size(40.dp).padding(end = 8.dp))
     }
     if (eventType == "talk") {
-        Icon(painter = painterResource(id = R.drawable.talk), contentDescription = "talk", modifier = Modifier.size(40.dp))
+        Icon(painter = painterResource(id = R.drawable.talk), contentDescription = "talk", modifier = Modifier.size(40.dp).padding(end = 8.dp))
     }
 }
 
@@ -242,6 +317,30 @@ fun EmailEventButton(emailSubject : String) {
 
     }
 
+}
+
+fun formatAndReturnDate(inputDateString: String): String {
+    if (inputDateString.isNotBlank()) {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM HH:mm", Locale.getDefault())
+
+        inputFormat.parse(inputDateString)?.run {
+            return outputFormat.format(this)
+        }
+    }
+    return "date tbd"
+}
+
+fun formatAndReturnTime(inputDateString: String): String {
+    if (inputDateString.isNotBlank()) {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+        inputFormat.parse(inputDateString)?.run {
+            return outputFormat.format(this)
+        }
+    }
+    return ""
 }
 
 
