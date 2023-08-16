@@ -54,7 +54,7 @@ class Events : ComponentActivity() {
 
     private val events = listOf<Event>(
         Event("Wellbeing Workshop", "2023-08-15T18:00:00", "2023-08-15T20:00:00", "social", "https://fb.me/e/W5aRT1tB"),
-        Event("First Year Panel w WiE & UC ENG", "2023-08-21T18:00:00", "2023-08-21T20:00:00", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
+        Event("UC ENG First Year Panel", "2023-08-21T18:00:00", "2023-08-21T20:00:00", "talk", "https://events.humanitix.com/diversity-in-engineering-panel-discussion?_ga=2.248800583.150471578.1691357784-291075914.1642034933"),
         Event("Bingo Night","2023-08-25T19:00:00", "2023-08-25T21:00:00", "social", ""),
         Event("Trimble Lunch & Learn", "2023-09-6T12:30:00", "2023-09-6T14:30:00", "workplace", ""),
         Event("Movie Night","", "", "social", ""),
@@ -146,7 +146,7 @@ fun EventsList(events: List<Event>) {
 
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 10.dp)) {
                     eventTypeIcon(event.eventType)
-                    Column() {
+                    Column( ) {
                         Text(
                             text = event.name,
                             modifier = Modifier.padding(all = 10.dp),
@@ -168,8 +168,11 @@ fun EventsList(events: List<Event>) {
                                 .padding(bottom = 15.dp)
                         )
                     }
-                    EventNotificationButton(event)
-                    EmailEventButton("Event Enquiry: " + event.name)
+                    //fix padding of buttons here
+                    Column(horizontalAlignment = Alignment.End, modifier = Modifier.padding(top = 20.dp)) {
+                        EventNotificationButton(event)
+                        EmailEventButton("Event Enquiry: " + event.name)
+                    }
                 }
             }
         }
@@ -200,9 +203,7 @@ fun eventTypeIcon(eventType : String) {
 fun EventNotificationButton(event : Event) {
     val context = LocalContext.current
 
-
     if (event.startTime.isNotBlank() && event.endTime.isNotBlank()) {
-
         IconButton(
             onClick = {
                 val mSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -215,13 +216,11 @@ fun EventNotificationButton(event : Event) {
                 intent.putExtra("endTime", mEndTime.time)
                 intent.putExtra("title", event.name)
                 context.startActivity(intent)
-
-
             }
         ) {
             Icon(
                 imageVector = Icons.Outlined.DateRange,
-                contentDescription = "Notification",
+                contentDescription = "Add to Calendar",
                 modifier = Modifier.size(30.dp)
             )
         }
