@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">witsoc</string>
+    <string name="app_name">UC WiTSoc</string>
     <string name="about_witsoc">"Women in Tech Society (WiTSoc) ist ein sozialer Club der University of Canterbury für alle Frauen (cis und trans) und nicht-binäre Menschen, die sich mit STEM beschäftigen. "</string>
     <string name="events_heading">Veranstaltungen</string>
     <string name="about_heading">" Über uns"</string>
