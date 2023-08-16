@@ -11,6 +11,16 @@
     <string name="signup">Sign Up</string>
     <string name="discord">Discord</string>
     <string name="about_witsoc">Women in Tech Society (WiTSoc) is a University of Canterbury social club for all women (cis and trans) and non-binary people involved in STEM.</string>
+    <string name="toast">Event doesn\'t have a link yet, check back later!</string>
+    <string name="wellbeingworkshop">Wellbeing Workshop</string>
+    <string name="firstyearpanel">UC ENG First Year Panel with WiE</string>
+    <string name="coffeetime">Coffee Time</string>
+    <string name="bingo">Bingo Night</string>
+    <string name="lunchandlearn">Trimble Lunch and Learn</string>
+    <string name="movienight">Movie Night</string>
+    <string name="welcomebackevent">Welcome Back Cozy Vibes</string>
+    <string name="execrecruitmentevent">Exec Recruitment Event</string>
+    <string name="officetourcatalyst">Catalyst Office Tour</string>
 
 
 </resources>

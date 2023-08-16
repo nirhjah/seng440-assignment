@@ -12,4 +12,14 @@
     <string name="linkedin">LinkedIn</string>
     <string name="signup">einschreiben</string>
     <string name="discord">Discord</string>
+    <string name="toast">"Für die Veranstaltung gibt es noch keinen Link, schauen Sie später noch einmal vorbei! "</string>
+    <string name="wellbeingworkshop">"Wohlfühl-Workshop "</string>
+    <string name="firstyearpanel">UC ENG Panel für das erste Jahr mit WiE</string>
+    <string name="coffeetime">Kaffeezeit</string>
+    <string name="bingo">Bingo Nacht</string>
+    <string name="lunchandlearn">"Mittagessen und Lernen "</string>
+    <string name="movienight">Filmabend</string>
+    <string name="welcomebackevent">"Willkommen zurück, gemütliche Stimmung "</string>
+    <string name="execrecruitmentevent">"Veranstaltung zur Rekrutierung von Führungskräften "</string>
+    <string name="officetourcatalyst">Catalyst Bürorundgang</string>
 </resources>
